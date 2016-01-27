@@ -32,13 +32,23 @@ public class SystemeThermique {
 
     private boolean repos = false;
     private int reposDepuis = 0;
-    
-    private double puissanceRadiateurActuelle= 0;
+
+    private double puissanceRadiateurActuelle = 0;
 
     /**
      * Temps de repos en minutes du radiateur
      */
-    public static int tempsRepos = 10;
+    public static int tempsRepos = 5;
+
+    /**
+     * Repos forcé, par l'interface graphique.
+     */
+    public boolean reposForce = false;
+
+    /**
+     * Automatisation de la température auto.
+     */
+    public boolean tempExtAuto = false;
 
     /**
      * Crée un système thermique avec une pièce, un environnement et un
@@ -59,13 +69,40 @@ public class SystemeThermique {
      * Evolution de la température.
      */
     public void evolutionTemperature() {
-        if (this.reposDepuis == SystemeThermique.tempsRepos) {
-            this.reposDepuis = 0;
-            this.repos = false;
-        }
-        // Calcul de la température au temps t+1
-        double dT = 0;
         if (this.repos) {
+            if (this.reposDepuis >= SystemeThermique.tempsRepos) {
+                this.reposDepuis = 0;
+                this.repos = false;
+            }
+        }
+
+        calculTemperatureExterieure(this.tempsCourant);
+
+        // Calcul thermostat
+        double dT = calculdT();
+
+        // Calcul de la température au temps t+1
+        double t = piece.getTemperatureAmbiante() + dT + piece.getIsolation() * (environnement.getTemperatureFixe() - piece.getTemperatureAmbiante());
+        if (t > (radiateur.getConsigne() - 0.1)) {
+            this.repos = true;
+        }
+
+        piece.setTemperatureAmbiante(t);
+        this.puissanceRadiateurActuelle = dT;
+
+        this.tempsCourant++;
+        afficherEtatSysteme(dT);
+    }
+
+    public void calculTemperatureExterieure(double t) {
+        if (this.tempExtAuto) {
+            this.environnement.setTemperatureFixe(Math.sin((t * Math.PI) / 10) * 10 + 14);
+        }
+    }
+
+    public double calculdT() {
+        double dT = 0;
+        if (this.repos || this.reposForce) {
             this.reposDepuis++;
         } else {
             dT = radiateur.getConsigne() - piece.getTemperatureAmbiante() - piece.getIsolation() * (environnement.getTemperatureFixe() - piece.getTemperatureAmbiante());
@@ -77,15 +114,7 @@ public class SystemeThermique {
 
             }
         }
-
-        double t = piece.getTemperatureAmbiante() + dT + piece.getIsolation() * (environnement.getTemperatureFixe() - piece.getTemperatureAmbiante());
-        if(t > (radiateur.getConsigne() - 1)) {
-            this.repos = true;
-        }
-        piece.setTemperatureAmbiante(t);
-        this.puissanceRadiateurActuelle = dT;
-        this.tempsCourant++;
-        afficherEtatSysteme(dT);
+        return dT;
     }
 
     public void afficherEtatSysteme(double dT) {
@@ -134,5 +163,4 @@ public class SystemeThermique {
         this.puissanceRadiateurActuelle = puissanceRadiateurActuelle;
     }
 
-    
 }
