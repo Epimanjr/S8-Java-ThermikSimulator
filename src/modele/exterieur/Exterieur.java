@@ -5,28 +5,14 @@ package modele.exterieur;
  * @author Maxime BLAISE
  * @author Antoine NOSAL
  */
-public class Exterieur {
+public abstract class Exterieur {
 
     /**
-     * Température fixe de l'environnement.
-     */
-    private double temperatureFixe;
-
-    /**
-     * Crée l'environnement avec une certaine température.
+     * Méthode qui permet de récupérer la température extérieure.
      *
-     * @param temperatureFixe .
+     * @param temps Temps t de la simulation
+     * @return Double
      */
-    public Exterieur(double temperatureFixe) {
-        this.temperatureFixe = temperatureFixe;
-    }
-
-    public double getTemperatureFixe() {
-        return temperatureFixe;
-    }
-
-    public void setTemperatureFixe(double temperatureFixe) {
-        this.temperatureFixe = temperatureFixe;
-    }
+    public abstract double getTemperatureExterieure(double temps);
 
 }
