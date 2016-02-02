@@ -48,11 +48,6 @@ public class SystemeThermique {
     public boolean reposForce = false;
 
     /**
-     * Automatisation de la température auto.
-     */
-    public boolean tempExtAuto = false;
-
-    /**
      * Crée un système thermique avec une pièce, un environnement et un
      * radiateurs.
      *
@@ -78,13 +73,11 @@ public class SystemeThermique {
             }
         }
 
-        calculTemperatureExterieure(this.tempsCourant);
-
         // Calcul thermostat
         double dT = calculdT();
 
         // Calcul de la température au temps t+1
-        double t = piece.getTemperatureAmbiante() + dT + piece.getIsolation() * (environnement.getTemperatureFixe() - piece.getTemperatureAmbiante());
+        double t = piece.getTemperatureAmbiante() + dT + piece.getIsolation() * (environnement.getTemperatureExterieure(this.tempsCourant) - piece.getTemperatureAmbiante());
         if (t > (radiateur.getConsigne() - 0.1)) {
             this.repos = true;
         }
@@ -96,18 +89,12 @@ public class SystemeThermique {
         afficherEtatSysteme(dT);
     }
 
-    public void calculTemperatureExterieure(double t) {
-        if (this.tempExtAuto) {
-            this.environnement.setTemperatureFixe(Math.sin((t * Math.PI) / 10) * 10 + 14);
-        }
-    }
-
     public double calculdT() {
         double dT = 0;
         if (this.repos || this.reposForce) {
             this.reposDepuis++;
         } else {
-            dT = radiateur.getConsigne() - piece.getTemperatureAmbiante() - piece.getIsolation() * (environnement.getTemperatureFixe() - piece.getTemperatureAmbiante());
+            dT = radiateur.getConsigne() - piece.getTemperatureAmbiante() - piece.getIsolation() * (environnement.getTemperatureExterieure(this.tempsCourant) - piece.getTemperatureAmbiante());
             if (dT > radiateur.getPuissanceMax()) {
                 dT = radiateur.getPuissanceMax();
             }
@@ -122,7 +109,7 @@ public class SystemeThermique {
     public void afficherEtatSysteme(double dT) {
         NumberFormat nf = new DecimalFormat("#.##");
         String s = nf.format(piece.getTemperatureAmbiante());
-        System.out.println(tempsCourant + " | T.int:" + s + " | Obj.:" + radiateur.getConsigne() + " | dT:" + dT + " | T.ext:" + environnement.getTemperatureFixe());
+        System.out.println(tempsCourant + " | T.int:" + s + " | Obj.:" + radiateur.getConsigne() + " | dT:" + dT + " | T.ext:" + environnement.getTemperatureExterieure(this.tempsCourant));
     }
 
     public int getTempsCourant() {
