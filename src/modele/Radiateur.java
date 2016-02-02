@@ -7,11 +7,6 @@ package modele;
 public class Radiateur {
 
     /**
-     * Pièce dans laquelle se trouve le radiateur.
-     */
-    private Piece piece;
-    
-    /**
      * Puissance maximale en C°/min.
      */
     private double puissanceMax;
@@ -27,26 +22,9 @@ public class Radiateur {
      * @param puissanceMax
      * @param consigne 
      */
-    public Radiateur(Piece piece, double puissanceMax, double consigne) {
-        this.piece = piece;
+    public Radiateur(double puissanceMax, double consigne) {
         this.puissanceMax = puissanceMax;
         this.consigne = consigne;
-    }
-
-    /**
-     * Retourne la pièce dans laquelle le radiateur se trouve
-     * @return Piece
-     */
-    public Piece getPiece() {
-        return piece;
-    }
-
-    /**
-     * Définit la pièce dans laquelle le radiateur se trouve
-     * @param piece 
-     */
-    public void setPiece(Piece piece) {
-        this.piece = piece;
     }
 
     /**

@@ -62,7 +62,7 @@ public class ThermikSimulator extends Application {
         // Initialise notre simulation
         Piece piece = new Piece(15, 0.1);
         Exterieur environnement = new Exterieur(2);
-        Radiateur radiateur = new Radiateur(piece, 2, 20);
+        Radiateur radiateur = new Radiateur(2, 20);
         systeme = new SystemeThermique(piece, environnement, radiateur);
 
         // Initialise l'affichage graphique

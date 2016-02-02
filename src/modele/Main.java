@@ -19,7 +19,7 @@ public class Main {
         // Création d'un système thermique
         Piece piece = new Piece(15, 0.1);
         Exterieur environnement = new Exterieur(2);
-        Radiateur radiateur = new Radiateur(piece, 2, 20);
+        Radiateur radiateur = new Radiateur(2, 20);
         SystemeThermique systeme = new SystemeThermique(piece, environnement, radiateur);
         // Loop
         while(true) {
