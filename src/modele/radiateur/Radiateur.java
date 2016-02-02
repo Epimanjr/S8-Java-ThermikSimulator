@@ -4,7 +4,7 @@ package modele.radiateur;
  * @author Maxime BLAISE
  * @author Antoine NOSAL
  */
-public class Radiateur {
+public abstract class Radiateur {
 
     /**
      * Puissance maximale en C°/min.
@@ -27,6 +27,8 @@ public class Radiateur {
         this.consigne = consigne;
     }
 
+    public abstract double getThermostat(int pieceTemp, int t);
+    
     /**
      * Retourne la puissance maximale (C°/min)
      * @return double
