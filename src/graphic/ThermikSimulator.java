@@ -1,4 +1,4 @@
-package thermiksimulator;
+package graphic;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -20,6 +20,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import thermiksimulator.Environnement;
+import thermiksimulator.Piece;
+import thermiksimulator.Radiateur;
+import thermiksimulator.SystemeThermique;
 
 /**
  *
