@@ -42,7 +42,7 @@ public abstract class Radiateur {
      * @param temperatureExterieure Température extérieure actuelle.
      * @return
      */
-    public abstract double getThermostat(Piece piece, int temperatureExterieure);
+    public abstract double getThermostat(Piece piece, double temperatureExterieure);
 
     /**
      * Méthode abstraite qui permet de modifier l'état du radiateur.
@@ -58,8 +58,9 @@ public abstract class Radiateur {
      * @param temperatureExterieure Température extérieure de la pièce
      * @return 
      */
-    protected double calculerThermostat(Piece piece, int temperatureExterieure) {
+    protected double calculerThermostat(Piece piece, double temperatureExterieure) {
         double dT;
+        System.err.println(this.getConsigne() + " - " + piece.getTemperatureAmbiante() + " - " + piece.getIsolation() + " ( " + temperatureExterieure + " - " + piece.getTemperatureAmbiante() + " ) ");
         dT = this.getConsigne() + 0.5 - piece.getTemperatureAmbiante() - piece.getIsolation() * (temperatureExterieure - piece.getTemperatureAmbiante());
         if (dT > this.getPuissanceMax()) {
             dT = this.getPuissanceMax();

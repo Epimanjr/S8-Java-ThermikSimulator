@@ -52,7 +52,7 @@ public class SystemeThermique {
      */
     public void evolutionTemperature() {
         // Calcul du thermostat
-        double thermostat = this.radiateur.getThermostat(piece, tempsCourant);
+        double thermostat = this.radiateur.getThermostat(piece, environnement.getTemperatureExterieure(tempsCourant));
         // Calcul de la nouvelle température
         double nouvelleTemperature = this.calculerProchaineTemperature(thermostat);
         // Modification de l'état du radiateur
