@@ -1,5 +1,6 @@
 package modele;
 
+import modele.radiateur.Radiateur;
 import modele.exterieur.Exterieur;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

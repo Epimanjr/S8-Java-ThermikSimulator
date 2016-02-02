@@ -1,5 +1,6 @@
 package modele;
 
+import modele.radiateur.Radiateur;
 import modele.exterieur.Exterieur;
 import java.util.logging.Level;
 import java.util.logging.Logger;

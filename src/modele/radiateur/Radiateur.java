@@ -1,4 +1,4 @@
-package modele;
+package modele.radiateur;
 
 /**
  * @author Maxime BLAISE

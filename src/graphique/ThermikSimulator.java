@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import modele.exterieur.Exterieur;
 import modele.Piece;
-import modele.Radiateur;
+import modele.radiateur.Radiateur;
 import modele.SystemeThermique;
 
 /**
