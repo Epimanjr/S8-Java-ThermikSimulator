@@ -1,4 +1,4 @@
-package graphic;
+package graphique;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -20,10 +20,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import thermiksimulator.Environnement;
-import thermiksimulator.Piece;
-import thermiksimulator.Radiateur;
-import thermiksimulator.SystemeThermique;
+import modele.exterieur.Exterieur;
+import modele.Piece;
+import modele.Radiateur;
+import modele.SystemeThermique;
 
 /**
  *
@@ -61,7 +61,7 @@ public class ThermikSimulator extends Application {
     public void start(Stage primaryStage) {
         // Initialise notre simulation
         Piece piece = new Piece(15, 0.1);
-        Environnement environnement = new Environnement(2);
+        Exterieur environnement = new Exterieur(2);
         Radiateur radiateur = new Radiateur(piece, 2, 20);
         systeme = new SystemeThermique(piece, environnement, radiateur);
 

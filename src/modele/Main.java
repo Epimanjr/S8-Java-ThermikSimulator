@@ -1,5 +1,6 @@
-package thermiksimulator;
+package modele;
 
+import modele.exterieur.Exterieur;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +18,7 @@ public class Main {
     public static void main(String[] args) {
         // Création d'un système thermique
         Piece piece = new Piece(15, 0.1);
-        Environnement environnement = new Environnement(2);
+        Exterieur environnement = new Exterieur(2);
         Radiateur radiateur = new Radiateur(piece, 2, 20);
         SystemeThermique systeme = new SystemeThermique(piece, environnement, radiateur);
         // Loop

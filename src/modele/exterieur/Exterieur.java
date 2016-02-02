@@ -1,11 +1,11 @@
-package thermiksimulator;
+package modele.exterieur;
 
 /**
  *
  * @author Maxime BLAISE
  * @author Antoine NOSAL
  */
-public class Environnement {
+public class Exterieur {
 
     /**
      * Température fixe de l'environnement.
@@ -17,7 +17,7 @@ public class Environnement {
      *
      * @param temperatureFixe .
      */
-    public Environnement(double temperatureFixe) {
+    public Exterieur(double temperatureFixe) {
         this.temperatureFixe = temperatureFixe;
     }
 

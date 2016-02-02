@@ -1,4 +1,4 @@
-package thermiksimulator;
+package modele;
 
 /**
  * @author Maxime BLAISE

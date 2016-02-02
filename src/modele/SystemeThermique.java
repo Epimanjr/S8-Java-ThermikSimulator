@@ -1,5 +1,6 @@
-package thermiksimulator;
+package modele;
 
+import modele.exterieur.Exterieur;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -23,7 +24,7 @@ public class SystemeThermique {
     /**
      * Environnement extérieur.
      */
-    private Environnement environnement;
+    private Exterieur environnement;
 
     /**
      * Radiateur de la pièce, pour la chauffer.
@@ -58,7 +59,7 @@ public class SystemeThermique {
      * @param environnement .
      * @param radiateur .
      */
-    public SystemeThermique(Piece piece, Environnement environnement, Radiateur radiateur) {
+    public SystemeThermique(Piece piece, Exterieur environnement, Radiateur radiateur) {
         this.tempsCourant = 0;
         this.piece = piece;
         this.environnement = environnement;
@@ -139,11 +140,11 @@ public class SystemeThermique {
         this.piece = piece;
     }
 
-    public Environnement getEnvironnement() {
+    public Exterieur getEnvironnement() {
         return environnement;
     }
 
-    public void setEnvironnement(Environnement environnement) {
+    public void setEnvironnement(Exterieur environnement) {
         this.environnement = environnement;
     }
 
