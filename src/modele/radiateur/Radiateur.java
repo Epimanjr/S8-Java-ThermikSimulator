@@ -58,7 +58,7 @@ public abstract class Radiateur {
      * @param temperatureExterieure Température extérieure de la pièce
      * @return 
      */
-    private double calculerThermostat(Piece piece, int temperatureExterieure) {
+    protected double calculerThermostat(Piece piece, int temperatureExterieure) {
         double dT;
         dT = this.getConsigne() - piece.getTemperatureAmbiante() - piece.getIsolation() * (temperatureExterieure - piece.getTemperatureAmbiante());
         if (dT > this.getPuissanceMax()) {
