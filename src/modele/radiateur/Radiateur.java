@@ -49,7 +49,7 @@ public abstract class Radiateur {
      * 
      * @param temperatureAmbiante Température actuelle de la pièce
      */
-    public abstract void setEtatRadiateur(int temperatureAmbiante);
+    public abstract void setEtatRadiateur(double temperatureAmbiante);
     
     /**
      * Méthode qui permet de calculer le thermostat du radiateur.
