@@ -14,23 +14,42 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import modele.exterieur.TemperatureConstante;
 import modele.exterieur.TemperatureSinusoid;
+import modele.radiateur.AvecTempsRepos;
 
 /**
  *
  * @author Maxime BLAISE
  */
 public class RadiateurControleur implements Initializable {
-
     
+    // LineChart
     @FXML private LineChart<Double, Double> graph;
-    @FXML private Button btDemarrer;
-    @FXML private Button btTemperatureSinus;
-
     private final LineChart.Series<Double, Double> serieInterieure = new LineChart.Series<>();
     private final LineChart.Series<Double, Double> serieExterieure = new LineChart.Series<>();
-
+    
+    // ThreadSimulation
     private Thread threadSimulation;
+    
+    // Boutons
+    @FXML private Button btDemarrer;
+    @FXML private Button btTemperatureSinus;
+    
+    // Saisies (pièce)
+    @FXML private TextField tfPieceIsolation;
+    
+    // Saisies (radiateur)
+    @FXML private TextField tfRadPuissanceMax;
+    @FXML private TextField tfRadAllumer;
+    @FXML private TextField tfRadEteindre;
+    @FXML private TextField tfRadConsigne;
+    @FXML private TextField tfRadAvecTempsRepos;
+    
+    // Saisies (environnement)
+    @FXML private TextField tfTemperatureFixe;
+    @FXML private TextField tfTemperatureSinus;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -45,11 +64,66 @@ public class RadiateurControleur implements Initializable {
         threadSimulation.setDaemon(true);
     }
     
+    private double getDouble(String t) {
+        Double d;
+        try {
+            d = Double.parseDouble(t);
+        } catch (Exception e) {
+            d = null;
+        }
+        return d;
+    }
+    
     @FXML
-    private void temperatureSinus(ActionEvent event) {
-        MainFrame.systeme.setEnvironnement(new TemperatureSinusoid(14, 10, 10));
+    private void pieceIsolation(ActionEvent event) {
+        Double d = getDouble(tfPieceIsolation.getText());
+        if(d!=null) {
+            MainFrame.systeme.getPiece().setIsolation(d);
+        } else {
+            tfPieceIsolation.setText("");
+        }
+    }
+    
+    @FXML
+    private void radPuissanceMax(ActionEvent event) {
+        Double d = getDouble(tfRadPuissanceMax.getText());
+        if(d!=null) {
+            MainFrame.systeme.getRadiateur().setPuissanceMax(d);
+        } else {
+            tfRadPuissanceMax.setText("");
+        }
+    }
+    
+    @FXML
+    private void radAllumer(ActionEvent event) {
+        MainFrame.systeme.getRadiateur().allumerLeRadiateur();
+    }
+    
+    @FXML
+    private void radEteindre(ActionEvent event) {
+        MainFrame.systeme.getRadiateur().eteindreLeRadiateur();
+    }
+    
+    @FXML
+    private void radConsigne(ActionEvent event) {
+        MainFrame.systeme.getRadiateur().setConsigne(10);
+    }
+    
+    @FXML
+    private void radAvecTempsRepos(ActionEvent event) {
+        MainFrame.systeme.setRadiateur(new AvecTempsRepos(10, 10));
     }
 
+    @FXML
+    private void envTemperatureSinus(ActionEvent event) {
+        MainFrame.systeme.setEnvironnement(new TemperatureSinusoid(14, 10, 10));
+    }
+    
+    @FXML
+    private void envTemperatureConstante(ActionEvent event) {
+        MainFrame.systeme.setEnvironnement(new TemperatureConstante(10));
+    }
+    
     @FXML
     private void handleButton(ActionEvent event) {
         serieInterieure.getData().add(new XYChart.Data<>(
