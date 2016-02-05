@@ -5,11 +5,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.chart.*?>
 <?import control.*?>
 
 <AnchorPane id="AnchorPane" prefHeight="100" prefWidth="800" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.RadiateurControleur">
     <children>
         <!-- Ajout du graphique -->
-        
+        <LineChart title="Evolution" fx:id="graph">
+            <xAxis>
+                <NumberAxis label="Temps" tickUnit="1"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="Température" autoRanging="true" lowerBound="-25" upperBound="25" tickUnit="1"/>
+            </yAxis>
+        </LineChart>
     </children>
 </AnchorPane>
