@@ -22,10 +22,21 @@
     </center>
     
     <bottom>
-        <GridPane prefWidth="750"> 
-            <Label GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" text="Piece" />
-            <Label GridPane.columnIndex="3" GridPane.rowIndex="0" GridPane.columnSpan="3" text="Radiateur" />
-            <Label GridPane.columnIndex="6" GridPane.rowIndex="0" GridPane.columnSpan="3" text="Environnement" />
-        </GridPane>
+        <HBox prefWidth="750">
+            <!-- Première partie : Pièce -->
+            <VBox alignment="CENTER" prefWidth="250">
+                <padding><Insets top="25" right="30" bottom="25" left="30"/></padding>
+                <Label styleClass="labelTitrePiece" text="Pièce" />
+                <HBox>
+                    <Label prefWidth="120" text="Isolation" />
+                    <TextField maxWidth="50" /> 
+                    <Button prefWidth="60" maxWidth="60" text="OK" />
+                </HBox>
+            </VBox>
+        </HBox>
     </bottom>
+    
+    <stylesheets>
+      <URL value="@css/radiateur.css" />
+    </stylesheets>
 </BorderPane>

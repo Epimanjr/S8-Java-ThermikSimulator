@@ -1,0 +1,4 @@
+.labelTitrePiece {
+    -fx-text-fill: red;
+    -fx-label-padding: 0 0 20 0;
+}
