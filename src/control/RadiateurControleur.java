@@ -28,6 +28,8 @@ public class RadiateurControleur implements Initializable {
     private final LineChart.Series<Double, Double> serieInterieure = new LineChart.Series<>();
     private final LineChart.Series<Double, Double> serieExterieure = new LineChart.Series<>();
 
+    private ThreadSimulation threadSimulation;
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Nommage des séries
@@ -36,6 +38,8 @@ public class RadiateurControleur implements Initializable {
         // Ajout des séries au graphe
         graph.getData().add(serieInterieure);
         graph.getData().add(serieExterieure);
+        // Instanciation du thread de simulation
+        threadSimulation = new ThreadSimulation(serieInterieure,serieExterieure);
     }
 
     @FXML
@@ -44,4 +48,10 @@ public class RadiateurControleur implements Initializable {
                 10.0, 10.0
         ));
     }
+    
+    @FXML
+    private void demarrerSimulation(ActionEvent event) {
+        threadSimulation.start();
+    }
+    
 }
