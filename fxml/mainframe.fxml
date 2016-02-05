@@ -8,23 +8,24 @@
 <?import javafx.scene.chart.*?>
 <?import control.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="100" prefWidth="800" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.RadiateurControleur">
-    <children>
-        <HBox>
-            <!-- Ajout du graphique -->
-            <LineChart title="Evolution" fx:id="graph">
-                <xAxis>
-                    <NumberAxis label="Temps" tickUnit="1"/>
-                </xAxis>
-                <yAxis>
-                    <NumberAxis label="Température" autoRanging="true" lowerBound="-25" upperBound="25" tickUnit="1"/>
-                </yAxis>
-            </LineChart>
-            <VBox>
-                <Button text="Démarrer la simulation" onAction="#demarrerSimulation" fx:id="btDemarrer" />
-                <Button text="Température auto"  onAction="#temperatureSinus" fx:id="btTemperatureSinus" />
-            </VBox>
-        </HBox>
-        
-    </children>
-</AnchorPane>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.RadiateurControleur">
+    <center>
+        <!-- Ajout du graphique -->
+        <LineChart  title="Evolution" prefWidth="750" fx:id="graph">
+            <xAxis>
+                <NumberAxis label="Temps" tickUnit="1"/>
+            </xAxis>
+            <yAxis>
+                <NumberAxis label="Température" autoRanging="true" lowerBound="-25" upperBound="25" tickUnit="1"/>
+            </yAxis>
+        </LineChart>
+    </center>
+    
+    <bottom>
+        <GridPane prefWidth="750"> 
+            <Label GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" text="Piece" />
+            <Label GridPane.columnIndex="3" GridPane.rowIndex="0" GridPane.columnSpan="3" text="Radiateur" />
+            <Label GridPane.columnIndex="6" GridPane.rowIndex="0" GridPane.columnSpan="3" text="Environnement" />
+        </GridPane>
+    </bottom>
+</BorderPane>
