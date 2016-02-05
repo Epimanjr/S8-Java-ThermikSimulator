@@ -39,7 +39,7 @@ public class ThreadSimulation implements Runnable {
                     temps, MainFrame.systeme.getPiece().getTemperatureAmbiante()
             ));
             serieExterieure.getData().add(new XYChart.Data<>(
-                    temps, MainFrame.systeme.getEnvironnement().getTemperatureFixe()
+                    temps, MainFrame.systeme.getEnvironnement().getTemperatureExterieure(temps)
             ));
             
             // Préparation de l'étape suivante
