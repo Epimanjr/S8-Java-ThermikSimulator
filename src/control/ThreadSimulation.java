@@ -63,5 +63,9 @@ public class ThreadSimulation implements Runnable {
         this.pas = pas;
     }
 
+    public double getPas() {
+        return pas;
+    }
+
     
 }
