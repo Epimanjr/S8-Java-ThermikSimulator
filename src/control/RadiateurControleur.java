@@ -5,6 +5,7 @@
  */
 package control;
 
+import com.sun.javaws.Main;
 import exception.ValeurIncorrecteException;
 import graphique.MainFrame;
 import java.net.URL;
@@ -38,6 +39,8 @@ public class RadiateurControleur implements Initializable {
     private ThreadSimulation threadSimulation;
     private Thread thread;
     
+    private TextField tfPas;
+    
     // Boutons
     @FXML private Button btDemarrer;
     @FXML private Button btTemperatureSinus;
@@ -46,6 +49,7 @@ public class RadiateurControleur implements Initializable {
     @FXML private TextField tfPieceIsolation;
     
     // Saisies (radiateur)
+    @FXML private RadioButton rbAvecTempsRepos;
     @FXML private TextField tfRadPuissanceMax;
     @FXML private TextField tfRadAllumer;
     @FXML private TextField tfRadEteindre;
@@ -71,6 +75,17 @@ public class RadiateurControleur implements Initializable {
         threadSimulation = new ThreadSimulation(serieInterieure, serieExterieure);
         thread = new Thread(threadSimulation);
         thread.setDaemon(true);
+    }
+    
+    @FXML
+    public void changerPas(ActionEvent event) {
+        try {
+            int pas = Integer.parseInt(tfPas.getText());
+            threadSimulation.setPas(pas);
+        } catch (Exception e) {
+            tfPas.setText(threadSimulation.getPas()+"");
+        }
+       
     }
     
     @FXML
@@ -141,6 +156,17 @@ public class RadiateurControleur implements Initializable {
             }
         } catch(Exception e) {
             tfEnvTemperatureFixe.setText(old.toString());
+        }
+    }
+    
+    @FXML
+    private void envTemperatureSinus(ActionEvent event) {
+        try {
+            double tempMoyenne = getEnvTemperatureMoyenne(tfEnvTemperatureMoyenne.getText());
+            double amplitude = getEnvAmplitude(tfEnvAmplitude.getText());
+            double periode = getEnvPeriode(tfEnvPeriode.getText());
+            MainFrame.systeme.setEnvironnement(new TemperatureSinusoid(tempMoyenne, amplitude, periode));
+        } catch (ValeurIncorrecteException ex) {
         }
     }
     
