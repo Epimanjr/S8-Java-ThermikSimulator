@@ -18,6 +18,8 @@ public class ThreadSimulation implements Runnable {
     private final LineChart.Series<Double, Double> serieInterieure;
     
     private double temps = 0;
+    
+    private double pas = 500;
 
     /**
      * Série de données pour la température extérieure.
@@ -50,11 +52,16 @@ public class ThreadSimulation implements Runnable {
             temps++;
             MainFrame.systeme.evolutionTemperature();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ThreadSimulation.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
+    public void setPas(double pas) {
+        this.pas = pas;
+    }
+
+    
 }

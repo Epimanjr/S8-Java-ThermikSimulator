@@ -16,6 +16,7 @@
         <HBox alignment="center" spacing="20" >
             <Button onAction="#demarrerSimulation" text="Démarrer la simulation"  />
             <Button text="Arrêter la simulation"  />
+            <TextField onAction="#changerPas" text="500" fx:id="tfPas" />
         </HBox>
     </top>
     
