@@ -8,10 +8,20 @@
 <?import javafx.scene.chart.*?>
 <?import control.*?>
 
+
+
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.RadiateurControleur">
+    <top>
+        <!-- Démarrer ou arreter la simulation -->
+        <HBox alignment="center" spacing="20" >
+            <Button onAction="#demarrerSimulation" text="Démarrer la simulation"  />
+            <Button text="Arrêter la simulation"  />
+        </HBox>
+    </top>
+    
     <center>
         <!-- Ajout du graphique -->
-        <LineChart  title="Evolution" prefWidth="750" fx:id="graph">
+        <LineChart title="Evolution des températures au cours du temps" prefWidth="750" fx:id="graph">
             <xAxis>
                 <NumberAxis label="Temps" tickUnit="1"/>
             </xAxis>
@@ -22,21 +32,65 @@
     </center>
     
     <bottom>
-        <HBox prefWidth="750">
+        <HBox alignment="CENTER"  prefWidth="750">
             <!-- Première partie : Pièce -->
-            <VBox alignment="CENTER" prefWidth="250">
-                <padding><Insets top="25" right="30" bottom="25" left="30"/></padding>
-                <Label styleClass="labelTitrePiece" text="Pièce" />
+            <VBox styleClass="vboxBottom" prefWidth="250">
+                <Label styleClass="labelTitre" text="Gestion de la pièce" />
+                <!-- Isolation -->
                 <HBox>
                     <Label prefWidth="120" text="Isolation" />
-                    <TextField maxWidth="50" /> 
-                    <Button prefWidth="60" maxWidth="60" text="OK" />
+                    <TextField maxWidth="50" fx:id="tfPieceIsolation" /> 
+                    <Button prefWidth="50" onAction="#pieceIsolation" maxWidth="50" text="OK" />
+                </HBox>
+            </VBox>
+            <!-- Deuxième partie : Radiateur -->
+            <VBox styleClass="vboxBottom" prefWidth="250">
+                <Label styleClass="labelTitre" text="Gestion du radiateur" />
+                <HBox alignment="center" spacing="20" >
+                    <Button text="Allumer" />
+                    <Button text="Eteindre" />
+                </HBox>
+                <HBox>
+                    <Label prefWidth="120" text="Puissance MAX" />
+                    <TextField maxWidth="50" fx:id="tfRadPuissanceMax" /> 
+                    <Button prefWidth="50" onAction="#radPuissanceMax" maxWidth="50" text="OK" />
+                </HBox>
+                <HBox>
+                    <Label prefWidth="120" text="Consigne" />
+                    <TextField maxWidth="50" fx:id="tfRadConsigne" /> 
+                    <Button prefWidth="50" onAction="#radConsigne" maxWidth="50" text="OK" />
+                </HBox>      
+            </VBox>
+            <!-- Troisième partie : Environnement -->
+            <VBox styleClass="vboxBottom" prefWidth="250">
+                <Label styleClass="labelTitre" text="Gestion de l'environnement" />
+                <RadioButton text="Température Fixe" />
+                <HBox>
+                    <Label prefWidth="120" text="Consigne" />
+                    <TextField maxWidth="50" fx:id="tfEnvTemperatureFixe" /> 
+                    <Button prefWidth="50" onAction="#envTemperatureFixe" maxWidth="50" text="OK" />
+                </HBox>
+                <RadioButton text="Température Sinus" />
+                <HBox>
+                    <Label prefWidth="120" text="Consigne" />
+                    <TextField maxWidth="50" fx:id="tfEnvTemperatureMoyenne" /> 
+                    <Button prefWidth="50" onAction="#envTemperatureMoyenne" maxWidth="50" text="OK" />
+                </HBox>
+                <HBox>
+                    <Label prefWidth="120" text="Consigne" />
+                    <TextField maxWidth="50" fx:id="tfEnvAmplitude" /> 
+                    <Button prefWidth="50" onAction="#envConsigne" maxWidth="50" text="OK" />
+                </HBox>
+                <HBox>
+                    <Label prefWidth="120" text="Consigne" />
+                    <TextField maxWidth="50" fx:id="tfEnvPeriode" /> 
+                    <Button prefWidth="50" onAction="#envPeriode" maxWidth="50" text="OK" />
                 </HBox>
             </VBox>
         </HBox>
     </bottom>
     
     <stylesheets>
-      <URL value="@css/radiateur.css" />
+        <URL value="@css/radiateur.css" />
     </stylesheets>
 </BorderPane>
