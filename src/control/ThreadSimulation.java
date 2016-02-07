@@ -30,6 +30,10 @@ public class ThreadSimulation implements Runnable {
         this.serieExterieure = serieExterieure;
     }
 
+    public double getTemps() {
+        return temps;
+    }
+    
     @Override
     public void run() {
         

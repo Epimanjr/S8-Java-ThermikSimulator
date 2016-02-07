@@ -5,15 +5,19 @@
  */
 package control;
 
+import exception.ValeurIncorrecteException;
 import graphique.MainFrame;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import modele.exterieur.TemperatureConstante;
 import modele.exterieur.TemperatureSinusoid;
@@ -31,7 +35,8 @@ public class RadiateurControleur implements Initializable {
     private final LineChart.Series<Double, Double> serieExterieure = new LineChart.Series<>();
     
     // ThreadSimulation
-    private Thread threadSimulation;
+    private ThreadSimulation threadSimulation;
+    private Thread thread;
     
     // Boutons
     @FXML private Button btDemarrer;
@@ -45,11 +50,14 @@ public class RadiateurControleur implements Initializable {
     @FXML private TextField tfRadAllumer;
     @FXML private TextField tfRadEteindre;
     @FXML private TextField tfRadConsigne;
-    @FXML private TextField tfRadAvecTempsRepos;
     
     // Saisies (environnement)
-    @FXML private TextField tfTemperatureFixe;
-    @FXML private TextField tfTemperatureSinus;
+    @FXML private RadioButton rbEnvTemperatureFixe;
+    @FXML private RadioButton rbEnvTemperatureSinus;
+    @FXML private TextField tfEnvTemperatureFixe;
+    @FXML private TextField tfEnvTemperatureMoyenne;
+    @FXML private TextField tfEnvAmplitude;
+    @FXML private TextField tfEnvPeriode;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -60,37 +68,30 @@ public class RadiateurControleur implements Initializable {
         graph.getData().add(serieInterieure);
         graph.getData().add(serieExterieure);
         // Instanciation du thread de simulation
-        threadSimulation = new Thread(new ThreadSimulation(serieInterieure, serieExterieure));
-        threadSimulation.setDaemon(true);
-    }
-    
-    private double getDouble(String t) {
-        Double d;
-        try {
-            d = Double.parseDouble(t);
-        } catch (Exception e) {
-            d = null;
-        }
-        return d;
+        threadSimulation = new ThreadSimulation(serieInterieure, serieExterieure);
+        thread = new Thread(threadSimulation);
+        thread.setDaemon(true);
     }
     
     @FXML
     private void pieceIsolation(ActionEvent event) {
-        Double d = getDouble(tfPieceIsolation.getText());
-        if(d!=null) {
+        Double old = MainFrame.systeme.getPiece().getIsolation();
+        try {
+            Double d = Double.parseDouble(tfPieceIsolation.getText());
             MainFrame.systeme.getPiece().setIsolation(d);
-        } else {
-            tfPieceIsolation.setText("");
+        } catch(Exception e) {
+            tfPieceIsolation.setText(old.toString());
         }
     }
     
     @FXML
     private void radPuissanceMax(ActionEvent event) {
-        Double d = getDouble(tfRadPuissanceMax.getText());
-        if(d!=null) {
+        Double old = MainFrame.systeme.getRadiateur().getPuissanceMax();
+        try {
+            Double d = Double.parseDouble(tfRadPuissanceMax.getText());
             MainFrame.systeme.getRadiateur().setPuissanceMax(d);
-        } else {
-            tfRadPuissanceMax.setText("");
+        } catch(Exception e) {
+            tfRadPuissanceMax.setText(old.toString());
         }
     }
     
@@ -106,22 +107,122 @@ public class RadiateurControleur implements Initializable {
     
     @FXML
     private void radConsigne(ActionEvent event) {
-        MainFrame.systeme.getRadiateur().setConsigne(10);
+        Double old = MainFrame.systeme.getRadiateur().getConsigne();
+        try {
+            Double d = Double.parseDouble(tfRadConsigne.getText());
+            MainFrame.systeme.getRadiateur().setConsigne(d);
+        } catch(Exception e) {
+            tfRadConsigne.setText(old.toString());
+        }
     }
     
     @FXML
     private void radAvecTempsRepos(ActionEvent event) {
-        MainFrame.systeme.setRadiateur(new AvecTempsRepos(10, 10));
-    }
-
-    @FXML
-    private void envTemperatureSinus(ActionEvent event) {
-        MainFrame.systeme.setEnvironnement(new TemperatureSinusoid(14, 10, 10));
+        Double oldRadPuissanceMax = MainFrame.systeme.getRadiateur().getPuissanceMax();
+        Double oldRadConsigne = MainFrame.systeme.getRadiateur().getConsigne();
+        try {
+            Double d1 = Double.parseDouble(tfRadPuissanceMax.getText());
+            Double d2 = Double.parseDouble(tfRadConsigne.getText());
+            MainFrame.systeme.setRadiateur(new AvecTempsRepos(d1, d2));
+        } catch(Exception e) {
+            tfRadPuissanceMax.setText(oldRadPuissanceMax.toString());
+            tfRadConsigne.setText(oldRadConsigne.toString());
+        }
     }
     
     @FXML
-    private void envTemperatureConstante(ActionEvent event) {
-        MainFrame.systeme.setEnvironnement(new TemperatureConstante(10));
+    private void envTemperatureFixe(ActionEvent event) {
+        Double old = MainFrame.systeme.getEnvironnement().getTemperatureExterieure(threadSimulation.getTemps());
+        try {
+            Double d = Double.parseDouble(tfEnvTemperatureFixe.getText());
+            if(MainFrame.systeme.getEnvironnement() instanceof TemperatureConstante) {
+                TemperatureConstante tc = (TemperatureConstante)MainFrame.systeme.getEnvironnement();
+                tc.setTemperatureExterieure(d);
+            }
+        } catch(Exception e) {
+            tfEnvTemperatureFixe.setText(old.toString());
+        }
+    }
+    
+    @FXML
+    private double getEnvTemperatureMoyenne(String envTemperatureMoyenne) throws ValeurIncorrecteException {
+        try {
+            Double d = Double.parseDouble(envTemperatureMoyenne);
+            // Ici, test min/max au besoin
+            return d;
+        } catch (Exception e) {
+        }
+        // Si on arrive ici, c'est qu'on a rien retourné donc soit c'est pas un double soit pas entre min&max
+        // Si températureSinus, on remet la valeur d'avant, et on lève l'exception
+        if(MainFrame.systeme.getEnvironnement() instanceof TemperatureSinusoid) {
+            TemperatureSinusoid ts = (TemperatureSinusoid)MainFrame.systeme.getEnvironnement();
+            tfEnvTemperatureMoyenne.setText(ts.getTemperatureMoyenne()+"");
+        }
+        throw new ValeurIncorrecteException();
+    }
+    
+    @FXML
+    private double getEnvAmplitude(String envAmplitude) throws ValeurIncorrecteException {
+        try {
+            Double d = Double.parseDouble(envAmplitude);
+            return d;
+        } catch (Exception e) {
+        }
+        if(MainFrame.systeme.getEnvironnement() instanceof TemperatureSinusoid) {
+            TemperatureSinusoid ts = (TemperatureSinusoid)MainFrame.systeme.getEnvironnement();
+            tfEnvAmplitude.setText(ts.getAmplitude()+"");
+        }
+        throw new ValeurIncorrecteException();
+    }
+    
+    @FXML
+    private double getEnvPeriode(String envPeriode) throws ValeurIncorrecteException {
+        try {
+            Double d = Double.parseDouble(envPeriode);
+            return d;
+        } catch (Exception e) {   
+        }
+        if(MainFrame.systeme.getEnvironnement() instanceof TemperatureSinusoid) {
+            TemperatureSinusoid ts = (TemperatureSinusoid)MainFrame.systeme.getEnvironnement();
+            tfEnvPeriode.setText(ts.getPeriode()+"");
+        }
+        throw new ValeurIncorrecteException();
+    }
+    
+    @FXML
+    private void envTemperatureMoyenne(ActionEvent event) {
+        try {
+            double tempMoyenne = getEnvTemperatureMoyenne(tfEnvTemperatureMoyenne.getText());
+            if(MainFrame.systeme.getEnvironnement() instanceof TemperatureSinusoid) {
+                TemperatureSinusoid ts = (TemperatureSinusoid)MainFrame.systeme.getEnvironnement();
+                ts.setTemperatureMoyenne(tempMoyenne);
+            }
+        } catch (ValeurIncorrecteException ex) {
+        }
+    }
+    
+    @FXML
+    private void envAmplitude(ActionEvent event) {
+        try {
+            double amplitude = getEnvTemperatureMoyenne(tfEnvAmplitude.getText());
+            if(MainFrame.systeme.getEnvironnement() instanceof TemperatureSinusoid) {
+                TemperatureSinusoid ts = (TemperatureSinusoid)MainFrame.systeme.getEnvironnement();
+                ts.setAmplitude(amplitude);
+            }
+        } catch (ValeurIncorrecteException ex) {
+        }
+    }
+    
+    @FXML
+    private void envPeriode(ActionEvent event) {
+        try {
+            double periode = getEnvTemperatureMoyenne(tfEnvPeriode.getText());
+            if(MainFrame.systeme.getEnvironnement() instanceof TemperatureSinusoid) {
+                TemperatureSinusoid ts = (TemperatureSinusoid)MainFrame.systeme.getEnvironnement();
+                ts.setPeriode(periode);
+            }
+        } catch (ValeurIncorrecteException ex) {
+        }
     }
     
     @FXML
@@ -134,7 +235,7 @@ public class RadiateurControleur implements Initializable {
     @FXML
     private void demarrerSimulation(ActionEvent event) {
         try {
-            threadSimulation.start();
+            thread.start();
         } catch(Exception e) {
             System.err.println("Erreur de thread");
         }
