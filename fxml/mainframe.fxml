@@ -16,7 +16,7 @@
         <HBox alignment="center" spacing="20" >
             <Button onAction="#demarrerSimulation" text="Démarrer la simulation"  />
             <Button text="Arrêter la simulation"  />
-            <TextField onAction="#changerPas" text="500" fx:id="tfPas" />
+            <!--<TextField onAction="#changerPas" text="500" fx:id="tfPas" />-->
         </HBox>
     </top>
     
@@ -65,13 +65,13 @@
             <!-- Troisième partie : Environnement -->
             <VBox styleClass="vboxBottom" prefWidth="250">
                 <Label styleClass="labelTitre" text="Gestion de l'environnement" />
-                <RadioButton text="Température Fixe" />
+                <RadioButton text="Température Fixe" fx:id="rbEnvTemperatureFixe" />
                 <HBox>
                     <Label prefWidth="120" text="Temp." />
                     <TextField maxWidth="50" fx:id="tfEnvTemperatureFixe" /> 
                     <Button prefWidth="50" onAction="#envTemperatureFixe" maxWidth="50" text="OK" />
                 </HBox>
-                <RadioButton text="Température Sinus" />
+                <RadioButton onAction="#envTemperatureSinus" text="Température Sinus" fx:id="rbEnvTemperatureSinus" />
                 <HBox>
                     <Label prefWidth="120" text="Temp. moyenne" />
                     <TextField maxWidth="50" fx:id="tfEnvTemperatureMoyenne" /> 

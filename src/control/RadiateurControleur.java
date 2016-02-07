@@ -5,13 +5,10 @@
  */
 package control;
 
-import com.sun.javaws.Main;
 import exception.ValeurIncorrecteException;
 import graphique.MainFrame;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,6 +17,8 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import modele.ValeurParDefaut;
 import modele.exterieur.TemperatureConstante;
 import modele.exterieur.TemperatureSinusoid;
 import modele.radiateur.AvecTempsRepos;
@@ -39,7 +38,7 @@ public class RadiateurControleur implements Initializable {
     private ThreadSimulation threadSimulation;
     private Thread thread;
     
-    private TextField tfPas;
+    @FXML private TextField tfPas;
     
     // Boutons
     @FXML private Button btDemarrer;
@@ -75,12 +74,33 @@ public class RadiateurControleur implements Initializable {
         threadSimulation = new ThreadSimulation(serieInterieure, serieExterieure);
         thread = new Thread(threadSimulation);
         thread.setDaemon(true);
+        // Groupe de RadioButton
+        final ToggleGroup tg = new ToggleGroup();
+        rbEnvTemperatureFixe.setToggleGroup(tg);
+        rbEnvTemperatureSinus.setToggleGroup(tg);
+        // Initialiser les valeurs par défaut
+        initValeursDefauts();
+    }
+    
+    /**
+     * Initialise dans l'interface les valeurs par défaut.
+     */
+    private void initValeursDefauts() {
+        /*tfPieceIsolation.setText(""+MainFrame.systeme.getPiece().getIsolation());
+        tfRadPuissanceMax.setText(""+MainFrame.systeme.getRadiateur().getPuissanceMax());
+        tfRadConsigne.setText(""+MainFrame.systeme.getRadiateur().getConsigne());
+        tfEnvTemperatureFixe.setText(""+MainFrame.systeme.getEnvironnement().getTemperatureExterieure(1));*/
+        tfPieceIsolation.setText(""+ValeurParDefaut.pieceIsolation);
+        tfRadPuissanceMax.setText(""+ValeurParDefaut.radPuissanceMax);
+        tfRadConsigne.setText(""+ValeurParDefaut.radConsigne);
+        tfEnvTemperatureFixe.setText(""+ValeurParDefaut.envTemperatureFixe);
+        rbEnvTemperatureFixe.setSelected(true);
     }
     
     @FXML
     public void changerPas(ActionEvent event) {
         try {
-            int pas = Integer.parseInt(tfPas.getText());
+            Integer pas = Integer.parseInt(tfPas.getText());
             threadSimulation.setPas(pas);
         } catch (Exception e) {
             tfPas.setText(threadSimulation.getPas()+"");
