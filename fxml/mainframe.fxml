@@ -66,23 +66,23 @@
                 <Label styleClass="labelTitre" text="Gestion de l'environnement" />
                 <RadioButton text="Température Fixe" />
                 <HBox>
-                    <Label prefWidth="120" text="Consigne" />
+                    <Label prefWidth="120" text="Temp." />
                     <TextField maxWidth="50" fx:id="tfEnvTemperatureFixe" /> 
                     <Button prefWidth="50" onAction="#envTemperatureFixe" maxWidth="50" text="OK" />
                 </HBox>
                 <RadioButton text="Température Sinus" />
                 <HBox>
-                    <Label prefWidth="120" text="Consigne" />
+                    <Label prefWidth="120" text="Temp. moyenne" />
                     <TextField maxWidth="50" fx:id="tfEnvTemperatureMoyenne" /> 
                     <Button prefWidth="50" onAction="#envTemperatureMoyenne" maxWidth="50" text="OK" />
                 </HBox>
                 <HBox>
-                    <Label prefWidth="120" text="Consigne" />
+                    <Label prefWidth="120" text="Amplitude" />
                     <TextField maxWidth="50" fx:id="tfEnvAmplitude" /> 
-                    <Button prefWidth="50" onAction="#envConsigne" maxWidth="50" text="OK" />
+                    <Button prefWidth="50" onAction="#envAmplitude" maxWidth="50" text="OK" />
                 </HBox>
                 <HBox>
-                    <Label prefWidth="120" text="Consigne" />
+                    <Label prefWidth="120" text="Période" />
                     <TextField maxWidth="50" fx:id="tfEnvPeriode" /> 
                     <Button prefWidth="50" onAction="#envPeriode" maxWidth="50" text="OK" />
                 </HBox>
