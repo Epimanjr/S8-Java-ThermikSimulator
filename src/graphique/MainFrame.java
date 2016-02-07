@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import modele.Piece;
 import modele.SystemeThermique;
+import modele.ValeurParDefaut;
 import modele.exterieur.Exterieur;
 import modele.exterieur.TemperatureConstante;
 import modele.radiateur.AvecTempsRepos;
@@ -37,9 +38,9 @@ public class MainFrame extends Application {
      */
     private static void initialiserSysteme() {
         // Création d'un système thermique
-        Piece piece = new Piece(15, 0.1);
-        Exterieur environnement = new TemperatureConstante(5);
-        Radiateur radiateur = new AvecTempsRepos(2, 22);
+        Piece piece = new Piece(ValeurParDefaut.pieceTemperatureInitiale,ValeurParDefaut.pieceIsolation);
+        Exterieur environnement = new TemperatureConstante(ValeurParDefaut.envTemperatureFixe);
+        Radiateur radiateur = new AvecTempsRepos(ValeurParDefaut.radPuissanceMax,ValeurParDefaut.radConsigne);
         systeme = new SystemeThermique(piece, environnement, radiateur);
     }
 

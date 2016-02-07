@@ -11,12 +11,11 @@ package modele;
  */
 public class ValeurParDefaut {
     
-    public static double pieceIsolation = 1;
-    public static double radPuissanceMax = 1;
-    public static double radConsigne = 1;
-    public static double envTemperatureFixe;
-    public static double envTemperatureMoyenne;
-    public static double envAmplitude;
-    public static double envPeriode;
+    public static double pieceTemperatureInitiale = 15;
+    public static double pieceIsolation = 0.1;
+    public static double radPuissanceMax = 2;
+    public static double radConsigne = 22;
+    public static double envTemperatureFixe = 7;
+    public static double envTemperatureMoyenne = 8;
     
 }
