@@ -24,7 +24,7 @@ public class MainFrame extends Application {
         Parent root = FXMLLoader.load(new File("fxml/mainframe.fxml").toURI().toURL());
         Scene scene = new Scene(root);
 
-        stage.setTitle("FXML Welcome");
+        stage.setTitle("Simulation thermique - Maxime BLAISE - Antoine NOSAL - ©2016");
         stage.setScene(scene);
 
         // Initialisation du système
