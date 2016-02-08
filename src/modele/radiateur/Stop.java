@@ -16,17 +16,16 @@ public class Stop extends Radiateur {
     }
 
     @Override
-    public double getThermostat(Piece piece, int temperatureExterieure) {
-        return (this.isEteint()) ? 0 : calculerThermostat(piece, temperatureExterieure);
+    public double getThermostat(Piece piece, double temperatureExterieure) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void setEtatRadiateur(int temperatureAmbiante) {
-        if(temperatureAmbiante >= this.getConsigne()) {
-            this.eteindreLeRadiateur();
-        }
+    public void setEtatRadiateur(double temperatureAmbiante) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+   
 
     
 }

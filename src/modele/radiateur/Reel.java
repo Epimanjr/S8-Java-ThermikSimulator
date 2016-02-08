@@ -1,5 +1,7 @@
 package modele.radiateur;
 
+import modele.Piece;
+
 /**
  *
  * @author Maxime BLAISE
@@ -7,8 +9,18 @@ package modele.radiateur;
  */
 public class Reel extends Radiateur {
 
+    public Reel(double puissanceMax, double consigne) {
+        super(puissanceMax, consigne);
+    }
+
+
     @Override
-    public double getThermostat(int pieceTemp, int t) {
+    public double getThermostat(Piece piece, double temperatureExterieure) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setEtatRadiateur(double temperatureAmbiante) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
