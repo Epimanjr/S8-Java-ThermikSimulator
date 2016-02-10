@@ -16,6 +16,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import modele.ValeurParDefaut;
@@ -61,6 +62,9 @@ public class RadiateurControleur implements Initializable {
     @FXML private TextField tfEnvTemperatureMoyenne;
     @FXML private TextField tfEnvAmplitude;
     @FXML private TextField tfEnvPeriode;
+            
+    // Slider(s)
+    @FXML private Slider sliderPieceIsolation;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -78,23 +82,14 @@ public class RadiateurControleur implements Initializable {
         final ToggleGroup tg = new ToggleGroup();
         rbEnvTemperatureFixe.setToggleGroup(tg);
         rbEnvTemperatureSinus.setToggleGroup(tg);
-        // Initialiser les valeurs par défaut
-        initValeursDefauts();
+        // Initialisation des sliders
     }
     
-    /**
-     * Initialise dans l'interface les valeurs par défaut.
-     */
-    private void initValeursDefauts() {
-        /*tfPieceIsolation.setText(""+MainFrame.systeme.getPiece().getIsolation());
-        tfRadPuissanceMax.setText(""+MainFrame.systeme.getRadiateur().getPuissanceMax());
-        tfRadConsigne.setText(""+MainFrame.systeme.getRadiateur().getConsigne());
-        tfEnvTemperatureFixe.setText(""+MainFrame.systeme.getEnvironnement().getTemperatureExterieure(1));*/
-        tfPieceIsolation.setText(""+ValeurParDefaut.pieceIsolation);
-        tfRadPuissanceMax.setText(""+ValeurParDefaut.radPuissanceMax);
-        tfRadConsigne.setText(""+ValeurParDefaut.radConsigne);
-        tfEnvTemperatureFixe.setText(""+ValeurParDefaut.envTemperatureFixe);
-        rbEnvTemperatureFixe.setSelected(true);
+    private void initialiserSliders() {
+        // Slider pièce isolation
+        sliderPieceIsolation.setMin(ParametresControl.minIsolation);
+        sliderPieceIsolation.setMax(ParametresControl.maxIsolation);
+        sliderPieceIsolation.setBlockIncrement((ParametresControl.maxIsolation - ParametresControl.minIsolation)/10);
     }
     
     @FXML
@@ -110,12 +105,12 @@ public class RadiateurControleur implements Initializable {
     
     @FXML
     private void pieceIsolation(ActionEvent event) {
-        Double old = MainFrame.systeme.getPiece().getIsolation();
-        try {
-            Double d = Double.parseDouble(tfPieceIsolation.getText());
-            MainFrame.systeme.getPiece().setIsolation(d);
-        } catch(Exception e) {
-            tfPieceIsolation.setText(old.toString());
+        // Récupération de la valeur pour vérification
+        double isolation = sliderPieceIsolation.getValue();
+        if(isolation < ParametresControl.minIsolation || isolation > ParametresControl.maxIsolation) {
+            System.err.println("Erreur: mauvaise valeur pour l'isolation de la pièce.");
+        } else {
+            MainFrame.systeme.getPiece().setIsolation(isolation);
         }
     }
     
