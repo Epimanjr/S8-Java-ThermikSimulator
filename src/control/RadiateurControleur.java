@@ -9,6 +9,8 @@ import exception.ValeurIncorrecteException;
 import graphique.MainFrame;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -65,6 +67,7 @@ public class RadiateurControleur implements Initializable {
             
     // Slider(s)
     @FXML private Slider sliderPieceIsolation;
+    @FXML private Slider sliderRadPuissanceMax;
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -73,16 +76,21 @@ public class RadiateurControleur implements Initializable {
         serieExterieure.setName("Température extérieure");
         // Ajout des séries au graphe
         graph.getData().add(serieInterieure);
-        graph.getData().add(serieExterieure);
+        //graph.getData().add(serieExterieure);
         // Instanciation du thread de simulation
-        threadSimulation = new ThreadSimulation(serieInterieure, serieExterieure);
+        /*threadSimulation = new ThreadSimulation(serieInterieure, serieExterieure);
         thread = new Thread(threadSimulation);
-        thread.setDaemon(true);
+        thread.setDaemon(true);*/
         // Groupe de RadioButton
         final ToggleGroup tg = new ToggleGroup();
         rbEnvTemperatureFixe.setToggleGroup(tg);
         rbEnvTemperatureSinus.setToggleGroup(tg);
         // Initialisation des sliders
+        initialiserSliders();
+        // BIND
+        // Initialisation du système
+        MainFrame.initialiserSysteme();
+        graph.getData().get(0).dataProperty().bindBidirectional(MainFrame.systeme.listeDesTemperatures);
     }
     
     private void initialiserSliders() {
@@ -90,6 +98,13 @@ public class RadiateurControleur implements Initializable {
         sliderPieceIsolation.setMin(ParametresControl.minIsolation);
         sliderPieceIsolation.setMax(ParametresControl.maxIsolation);
         sliderPieceIsolation.setBlockIncrement((ParametresControl.maxIsolation - ParametresControl.minIsolation)/10);
+        sliderPieceIsolation.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            pieceIsolation();
+        });
+        // Slider radiateur puissance max
+        sliderRadPuissanceMax.setMin(ParametresControl.minPuissanceMax);
+        sliderRadPuissanceMax.setMax(ParametresControl.maxPuissanceMax);
+        sliderRadPuissanceMax.setBlockIncrement((ParametresControl.maxPuissanceMax - ParametresControl.minPuissanceMax)/10);
     }
     
     @FXML
@@ -102,9 +117,9 @@ public class RadiateurControleur implements Initializable {
         }
        
     }
-    
-    @FXML
-    private void pieceIsolation(ActionEvent event) {
+
+    private void pieceIsolation() {
+        System.err.println("BONJOUR");
         // Récupération de la valeur pour vérification
         double isolation = sliderPieceIsolation.getValue();
         if(isolation < ParametresControl.minIsolation || isolation > ParametresControl.maxIsolation) {
@@ -116,12 +131,12 @@ public class RadiateurControleur implements Initializable {
     
     @FXML
     private void radPuissanceMax(ActionEvent event) {
-        Double old = MainFrame.systeme.getRadiateur().getPuissanceMax();
-        try {
-            Double d = Double.parseDouble(tfRadPuissanceMax.getText());
-            MainFrame.systeme.getRadiateur().setPuissanceMax(d);
-        } catch(Exception e) {
-            tfRadPuissanceMax.setText(old.toString());
+        // Récupération de la valeur pour vérification
+        double puissance = sliderRadPuissanceMax.getValue();
+        if(puissance < ParametresControl.minPuissanceMax || puissance > ParametresControl.maxPuissanceMax) {
+            System.err.println("Erreur: mauvaise valeur pour la puissance max du radiateur.");
+        } else {
+            MainFrame.systeme.getRadiateur().setPuissanceMax(puissance);
         }
     }
     
@@ -275,11 +290,7 @@ public class RadiateurControleur implements Initializable {
     
     @FXML
     private void demarrerSimulation(ActionEvent event) {
-        try {
-            thread.start();
-        } catch(Exception e) {
-            System.err.println("Erreur de thread");
-        }
+        MainFrame.systeme.demarrerSimulation();
     }
     
 }

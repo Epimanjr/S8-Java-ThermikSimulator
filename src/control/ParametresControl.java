@@ -14,4 +14,8 @@ public class ParametresControl {
     // Paramètre isolation
     public static double minIsolation = 0.01;
     public static double maxIsolation = 1;
+    
+    // Paramètre radiateur
+    public static double minPuissanceMax = 0.1;
+    public static double maxPuissanceMax = 10;
 }
