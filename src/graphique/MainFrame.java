@@ -27,8 +27,7 @@ public class MainFrame extends Application {
         stage.setTitle("Simulation thermique - Maxime BLAISE - Antoine NOSAL - ©2016");
         stage.setScene(scene);
 
-        // Initialisation du système
-        initialiserSysteme();
+        
 
         stage.show();
     }
@@ -36,7 +35,7 @@ public class MainFrame extends Application {
     /**
      * Méthode qui permet d'instancier un système thermique.
      */
-    private static void initialiserSysteme() {
+    public static void initialiserSysteme() {
         // Création d'un système thermique
         Piece piece = new Piece(ValeurParDefaut.pieceTemperatureInitiale,ValeurParDefaut.pieceIsolation);
         Exterieur environnement = new TemperatureConstante(ValeurParDefaut.envTemperatureFixe);

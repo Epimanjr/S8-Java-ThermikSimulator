@@ -4,6 +4,14 @@ import modele.radiateur.Radiateur;
 import modele.exterieur.Exterieur;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.ListPropertyBase;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
 
 /**
  *
@@ -32,6 +40,8 @@ public class SystemeThermique {
      */
     private Radiateur radiateur;
 
+    public ListProperty<Data<Double, Double>> listeDesTemperatures;
+
     /**
      * Crée un système thermique avec une pièce, un environnement et un
      * radiateurs.
@@ -41,16 +51,26 @@ public class SystemeThermique {
      * @param radiateur .
      */
     public SystemeThermique(Piece piece, Exterieur environnement, Radiateur radiateur) {
+        this.listeDesTemperatures = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.tempsCourant = 0;
         this.piece = piece;
         this.environnement = environnement;
         this.radiateur = radiateur;
+    }
+    
+    public void demarrerSimulation() {
+        for(int i=0;i<100;i++) {
+            evolutionTemperature();
+        }
     }
 
     /**
      * Evolution de la température.
      */
     public void evolutionTemperature() {
+        // Mise à jour de notre liste de températures
+        System.out.println("Ajout de " + (double)this.tempsCourant + " - " + this.piece.getTemperatureAmbiante());
+        this.listeDesTemperatures.add(new XYChart.Data<>((double)this.tempsCourant, this.piece.getTemperatureAmbiante()));
         // Calcul du thermostat
         double thermostat = this.radiateur.getThermostat(piece, environnement.getTemperatureExterieure(tempsCourant));
         // Calcul de la nouvelle température
