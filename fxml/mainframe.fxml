@@ -9,14 +9,17 @@
 <?import javafx.scene.chart.*?>
 <?import control.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="control.RadiateurControleur">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.RadiateurControleur">
     <top>
         <!-- Démarrer ou arreter la simulation -->
-        <HBox alignment="center" spacing="20">
+        <HBox alignment="center" spacing="50.0">
            <children>
-               <Button onAction="#demarrerSimulation" text="Démarrer la simulation" />
-               <Button text="Arrêter la simulation" />
+               <Button onAction="#demarrerSimulation" rotate="-9.0" style="-fx-background-color: green; -fx-text-fill: white;" text="Démarrer" textAlignment="CENTER" />
+               <Button rotate="-9.0" style="-fx-background-color: red; -fx-text-fill: white;" text="Arrêter" />
            </children>
+         <padding>
+            <Insets bottom="10.0" top="10.0" />
+         </padding>
             <!--<TextField onAction="#changerPas" text="500" fx:id="tfPas" />-->
         </HBox>
     </top>
@@ -59,7 +62,7 @@
                       <HBox>
                          <children>
                              <Label prefWidth="120" text="Isolation" />
-                        <Slider fx:id="sliderPieceIsolation" onDragDetected="#pieceIsolation" showTickLabels="true" showTickMarks="true" />
+                        <Slider fx:id="sliderPieceIsolation" showTickLabels="true" showTickMarks="true" />
                          </children>
                       </HBox>
                   </children>
