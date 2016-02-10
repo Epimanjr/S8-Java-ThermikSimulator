@@ -59,9 +59,14 @@ public class SystemeThermique {
     }
     
     public void demarrerSimulation() {
+        this.tempsCourant = 0;
         for(int i=0;i<100;i++) {
             evolutionTemperature();
         }
+    }
+    
+    public void arreterSimulation() {
+        this.listeDesTemperatures.removeAll(this.listeDesTemperatures);
     }
 
     /**

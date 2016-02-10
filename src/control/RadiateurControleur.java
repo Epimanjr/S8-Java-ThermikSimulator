@@ -119,7 +119,6 @@ public class RadiateurControleur implements Initializable {
     }
 
     private void pieceIsolation() {
-        System.err.println("BONJOUR");
         // Récupération de la valeur pour vérification
         double isolation = sliderPieceIsolation.getValue();
         if(isolation < ParametresControl.minIsolation || isolation > ParametresControl.maxIsolation) {
@@ -291,6 +290,11 @@ public class RadiateurControleur implements Initializable {
     @FXML
     private void demarrerSimulation(ActionEvent event) {
         MainFrame.systeme.demarrerSimulation();
+    }
+    
+    @FXML
+    private void arreterSimulation(ActionEvent event) {
+        MainFrame.systeme.arreterSimulation();
     }
     
 }
