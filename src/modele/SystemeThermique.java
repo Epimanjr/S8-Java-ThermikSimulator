@@ -74,7 +74,7 @@ public class SystemeThermique {
      */
     public void evolutionTemperature() {
         // Mise à jour de notre liste de températures
-        System.out.println("Ajout de " + (double)this.tempsCourant + " - " + this.piece.getTemperatureAmbiante());
+        //System.out.println("Ajout de " + (double)this.tempsCourant + " - " + this.piece.getTemperatureAmbiante());
         this.listeDesTemperatures.add(new XYChart.Data<>((double)this.tempsCourant, this.piece.getTemperatureAmbiante()));
         // Calcul du thermostat
         double thermostat = this.radiateur.getThermostat(piece, environnement.getTemperatureExterieure(tempsCourant));
@@ -85,7 +85,7 @@ public class SystemeThermique {
         // Modification des données
         piece.setTemperatureAmbiante(nouvelleTemperature);
         this.tempsCourant++;
-        afficherEtatSysteme(thermostat);
+        //afficherEtatSysteme(thermostat);
     }
 
     /**

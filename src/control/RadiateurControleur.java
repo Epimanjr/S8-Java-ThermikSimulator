@@ -5,18 +5,23 @@
  */
 package control;
 
+import control.service.ServiceStatique;
 import exception.ValeurIncorrecteException;
 import graphique.MainFrame;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -31,11 +36,9 @@ import modele.radiateur.AvecTempsRepos;
  * @author Maxime BLAISE
  */
 public class RadiateurControleur implements Initializable {
-    
+    @FXML private ProgressIndicator progress;
     // LineChart
     @FXML private LineChart<Double, Double> graph;
-    private final LineChart.Series<Double, Double> serieInterieure = new LineChart.Series<>();
-    private final LineChart.Series<Double, Double> serieExterieure = new LineChart.Series<>();
     
     // ThreadSimulation
     private ThreadSimulation threadSimulation;
@@ -71,26 +74,16 @@ public class RadiateurControleur implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Nommage des séries
-        serieInterieure.setName("Température intérieure");
-        serieExterieure.setName("Température extérieure");
-        // Ajout des séries au graphe
-        graph.getData().add(serieInterieure);
-        //graph.getData().add(serieExterieure);
-        // Instanciation du thread de simulation
-        /*threadSimulation = new ThreadSimulation(serieInterieure, serieExterieure);
-        thread = new Thread(threadSimulation);
-        thread.setDaemon(true);*/
         // Groupe de RadioButton
         final ToggleGroup tg = new ToggleGroup();
+        graph.setCreateSymbols(false);
         rbEnvTemperatureFixe.setToggleGroup(tg);
         rbEnvTemperatureSinus.setToggleGroup(tg);
         // Initialisation des sliders
         initialiserSliders();
-        // BIND
         // Initialisation du système
         MainFrame.initialiserSysteme();
-        graph.getData().get(0).dataProperty().bindBidirectional(MainFrame.systeme.listeDesTemperatures);
+        //graph.getData().get(0).dataProperty().bindBidirectional(MainFrame.systeme.listeDesTemperatures);
     }
     
     private void initialiserSliders() {
@@ -281,15 +274,17 @@ public class RadiateurControleur implements Initializable {
     }
     
     @FXML
-    private void handleButton(ActionEvent event) {
-        serieInterieure.getData().add(new XYChart.Data<>(
-                10.0, 10.0
-        ));
-    }
-    
-    @FXML
     private void demarrerSimulation(ActionEvent event) {
-        MainFrame.systeme.demarrerSimulation();
+        //MainFrame.systeme.demarrerSimulation();
+        graph.getData().removeAll(graph.getData());
+        ServiceStatique service = new ServiceStatique(1000);
+        
+        progress.visibleProperty().bind(service.runningProperty());
+        
+        service.start();
+        service.setOnSucceeded((WorkerStateEvent event1) -> {
+            graph.getData().addAll(service.getSerieInterieure(), service.getSerieExterieure());
+        });
     }
     
     @FXML
