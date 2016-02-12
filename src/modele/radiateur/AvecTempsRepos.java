@@ -8,7 +8,7 @@ import modele.Piece;
  */
 public class AvecTempsRepos extends Radiateur {
 
-    public static int tempsRepos = 5;
+    public static int tempsRepos = 2;
     private boolean repos;
     private int reposDepuis = 0;
 
@@ -34,7 +34,7 @@ public class AvecTempsRepos extends Radiateur {
             }
         } else // Pas en repos
         {
-            if (temperatureAmbiante > (this.getConsigne())) {
+            if (temperatureAmbiante > (this.getConsigne() + 2)) {
                 this.desactiverLeRadiateur();
             }
         }

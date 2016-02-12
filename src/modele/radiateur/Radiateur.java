@@ -61,7 +61,7 @@ public abstract class Radiateur {
     protected double calculerThermostat(Piece piece, double temperatureExterieure) {
         double dT;
        // System.err.println(this.getConsigne() + " - " + piece.getTemperatureAmbiante() + " - " + piece.getIsolation() + " ( " + temperatureExterieure + " - " + piece.getTemperatureAmbiante() + " ) ");
-        dT = this.getConsigne() + 0.5 - piece.getTemperatureAmbiante() - piece.getIsolation() * (temperatureExterieure - piece.getTemperatureAmbiante());
+        dT = this.getConsigne() + 2.5 - piece.getTemperatureAmbiante() - piece.getIsolation() * (temperatureExterieure - piece.getTemperatureAmbiante());
         if (dT > this.getPuissanceMax()) {
             dT = this.getPuissanceMax();
         }

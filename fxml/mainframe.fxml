@@ -10,130 +10,138 @@
 <?import control.*?>
 
 <StackPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="control.RadiateurControleur">
-    <BorderPane >
-        <top>
-            <!-- Démarrer ou arreter la simulation -->
-            <HBox alignment="center" spacing="50.0">
-                <children>
-                    <Button onAction="#demarrerSimulation" rotate="-9.0" style="-fx-background-color: green; -fx-text-fill: white;" text="Démarrer" textAlignment="CENTER" />
-                    <Button onAction="#arreterSimulation" rotate="-9.0" style="-fx-background-color: red; -fx-text-fill: white;" text="Arrêter" />
-                </children>
-                <padding>
-                    <Insets bottom="10.0" top="10.0" />
-                </padding>
-                <!--<TextField onAction="#changerPas" text="500" fx:id="tfPas" />-->
-            </HBox>
-        </top>
-    
-        <center>
-
-                    <!-- Ajout du graphique -->
-                    <LineChart fx:id="graph" prefWidth="750" title="Evolution des températures au cours du temps">
-                        <xAxis>
-                            <NumberAxis label="Temps" tickUnit="1" />
-                        </xAxis>
-                        <yAxis>
-                            <NumberAxis autoRanging="true" label="Température" lowerBound="-25" tickUnit="1" upperBound="25" />
-                        </yAxis>
-                    </LineChart>
-                    <!--<VBox>
-                        <children>
-                            <HBox>
-                                <children>
-                                    <Label text="Isolation" />
-                                    <Label fx:id="labPieceIsolation" text="${tfPieceIsolation.text}" />
-                                </children>
-                            </HBox>
-                        </children>
-                    </VBox>-->
-
-        
-        </center>
-    
-        <bottom>
-            <HBox alignment="CENTER" prefWidth="750">
-                <children>
-                    <!-- Première partie : Pièce -->
-                    <VBox prefWidth="250" styleClass="vboxBottom">
-                        <children>
-                            <Label styleClass="labelTitre" text="Gestion de la pièce" />
-                            <!-- Isolation -->
-                            <HBox>
-                                <children>
-                                    <Label prefWidth="120" text="Isolation" />
-                                    <Slider fx:id="sliderPieceIsolation" showTickLabels="true" showTickMarks="true" />
-                                </children>
-                            </HBox>
-                        </children>
-                    </VBox>
-                    <!-- Deuxième partie : Radiateur -->
-                    <VBox prefWidth="250" styleClass="vboxBottom">
-                        <children>
-                            <Label styleClass="labelTitre" text="Gestion du radiateur" />
-                            <HBox alignment="center" spacing="20">
-                                <children>
-                                    <Button text="Allumer" />
-                                    <Button text="Eteindre" />
-                                </children>
-                            </HBox>
-                            <HBox>
-                                <children>
-                                    <Label prefWidth="120" text="Puissance MAX" />
-                                    <Slider fx:id="sliderRadPuissanceMax" onDragDetected="#radPuissanceMax" showTickLabels="true" showTickMarks="true" />
-                                </children>
-                            </HBox>
-                            <HBox>
-                                <children>
-                                    <Label prefWidth="120" text="Consigne" />
-                                    <TextField fx:id="tfRadConsigne" maxWidth="50" /> 
-                                    <Button maxWidth="50" onAction="#radConsigne" prefWidth="50" text="OK" />
-                                </children>
-                            </HBox>
-                        </children>      
-                    </VBox>
-                    <!-- Troisième partie : Environnement -->
-                    <VBox prefWidth="250" styleClass="vboxBottom">
-                        <children>
-                            <Label styleClass="labelTitre" text="Gestion de l'environnement" />
-                            <RadioButton fx:id="rbEnvTemperatureFixe" text="Température Fixe" />
-                            <HBox>
-                                <children>
-                                    <Label prefWidth="120" text="Temp." />
-                                    <TextField fx:id="tfEnvTemperatureFixe" maxWidth="50" /> 
-                                    <Button maxWidth="50" onAction="#envTemperatureFixe" prefWidth="50" text="OK" />
-                                </children>
-                            </HBox>
-                            <RadioButton fx:id="rbEnvTemperatureSinus" onAction="#envTemperatureSinus" text="Température Sinus" />
-                            <HBox>
-                                <children>
-                                    <Label prefWidth="120" text="Temp. moyenne" />
-                                    <TextField fx:id="tfEnvTemperatureMoyenne" maxWidth="50" /> 
-                                    <Button maxWidth="50" onAction="#envTemperatureMoyenne" prefWidth="50" text="OK" />
-                                </children>
-                            </HBox>
-                            <HBox>
-                                <children>
-                                    <Label prefWidth="120" text="Amplitude" />
-                                    <TextField fx:id="tfEnvAmplitude" maxWidth="50" /> 
-                                    <Button maxWidth="50" onAction="#envAmplitude" prefWidth="50" text="OK" />
-                                </children>
-                            </HBox>
-                            <HBox>
-                                <children>
-                                    <Label prefWidth="120" text="Période" />
-                                    <TextField fx:id="tfEnvPeriode" maxWidth="50" /> 
-                                    <Button maxWidth="50" onAction="#envPeriode" prefWidth="50" text="OK" />
-                                </children>
-                            </HBox>
-                        </children>
-                    </VBox>
-                </children>
-            </HBox>
-        </bottom>
-    
-        <stylesheets>
-            <URL value="@css/radiateur.css" />
-        </stylesheets>
-    </BorderPane>
-    <ProgressIndicator visible="false" fx:id="progress" />
+    <children>
+        <BorderPane>
+            <top>
+                <!-- Démarrer ou arreter la simulation -->
+                <HBox alignment="center" prefHeight="60.0" prefWidth="750.0" spacing="50.0">
+                    <children>
+                        <VBox>
+                            <RadioButton mnemonicParsing="false" onAction="#setSimulationStatique" text="Simulation statique" fx:id="rbStaticSimulation" />
+                            <RadioButton mnemonicParsing="false" onAction="#setSimulationDynamique" text="Simulation dynamique" fx:id="rbDynamicSimulation" />
+                        </VBox>
+                  
+                        <Button onAction="#demarrerSimulation" rotate="-9.0" style="-fx-background-color: green; -fx-text-fill: white;" text="Démarrer" textAlignment="CENTER" />
+                        <Button onAction="#arreterSimulation" rotate="-9.0" style="-fx-background-color: red; -fx-text-fill: white;" text="Arrêter" fx:id="btArreterSimulation" />
+                        <Button onAction="#continuerSimulation" rotate="-9.0" style="-fx-background-color: blue; -fx-text-fill: white;" text="Continuer" fx:id="btContinuerSimulation" />
+                    </children>
+                    <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                    </padding>
+                    <!--<TextField onAction="#changerPas" text="500" fx:id="tfPas" />-->
+                </HBox>
+            </top>
+       
+            <center>
+   
+                <!-- Ajout du graphique -->
+                <LineChart fx:id="graph" prefWidth="750" title="Evolution des températures au cours du temps">
+                    <xAxis>
+                        <NumberAxis label="Temps" tickUnit="1" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis autoRanging="true" label="Température" lowerBound="-25" tickUnit="1" upperBound="25" />
+                    </yAxis>
+                </LineChart>
+                <!--<VBox>
+                    <children>
+                        <HBox>
+                            <children>
+                                <Label text="Isolation" />
+                                <Label fx:id="labPieceIsolation" text="${tfPieceIsolation.text}" />
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>-->
+   
+           
+            </center>
+       
+            <bottom>
+                <HBox alignment="CENTER" prefWidth="750">
+                    <children>
+                        <!-- Première partie : Pièce -->
+                        <VBox prefWidth="250" styleClass="vboxBottom">
+                            <children>
+                                <Label styleClass="labelTitre" text="Gestion de la pièce" />
+                                <!-- Isolation -->
+                                <HBox>
+                                    <children>
+                                        <Label prefWidth="120" text="Isolation" />
+                                        <Slider fx:id="sliderPieceIsolation" showTickLabels="true" showTickMarks="true" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                        <!-- Deuxième partie : Radiateur -->
+                        <VBox prefWidth="250" styleClass="vboxBottom">
+                            <children>
+                                <Label styleClass="labelTitre" text="Gestion du radiateur" />
+                                <HBox alignment="center" spacing="20">
+                                    <children>
+                                        <Button text="Allumer" />
+                                        <Button text="Eteindre" />
+                                    </children>
+                                </HBox>
+                                <HBox>
+                                    <children>
+                                        <Label prefWidth="120" text="Puissance MAX" />
+                                        <Slider fx:id="sliderRadPuissanceMax" onDragDetected="#radPuissanceMax" showTickLabels="true" showTickMarks="true" />
+                                    </children>
+                                </HBox>
+                                <HBox>
+                                    <children>
+                                        <Label prefWidth="120" text="Consigne" />
+                                        <TextField fx:id="tfRadConsigne" maxWidth="50" /> 
+                                        <Button maxWidth="50" onAction="#radConsigne" prefWidth="50" text="OK" />
+                                    </children>
+                                </HBox>
+                            </children>      
+                        </VBox>
+                        <!-- Troisième partie : Environnement -->
+                        <VBox prefWidth="250" styleClass="vboxBottom">
+                            <children>
+                                <Label styleClass="labelTitre" text="Gestion de l'environnement" />
+                                <RadioButton fx:id="rbEnvTemperatureFixe" text="Température Fixe" />
+                                <HBox>
+                                    <children>
+                                        <Label prefWidth="120" text="Temp." />
+                                        <TextField fx:id="tfEnvTemperatureFixe" maxWidth="50" /> 
+                                        <Button maxWidth="50" onAction="#envTemperatureFixe" prefWidth="50" text="OK" />
+                                    </children>
+                                </HBox>
+                                <RadioButton fx:id="rbEnvTemperatureSinus" onAction="#envTemperatureSinus" text="Température Sinus" />
+                                <HBox>
+                                    <children>
+                                        <Label prefWidth="120" text="Temp. moyenne" />
+                                        <TextField fx:id="tfEnvTemperatureMoyenne" maxWidth="50" /> 
+                                        <Button maxWidth="50" onAction="#envTemperatureMoyenne" prefWidth="50" text="OK" />
+                                    </children>
+                                </HBox>
+                                <HBox>
+                                    <children>
+                                        <Label prefWidth="120" text="Amplitude" />
+                                        <TextField fx:id="tfEnvAmplitude" maxWidth="50" /> 
+                                        <Button maxWidth="50" onAction="#envAmplitude" prefWidth="50" text="OK" />
+                                    </children>
+                                </HBox>
+                                <HBox>
+                                    <children>
+                                        <Label prefWidth="120" text="Période" />
+                                        <TextField fx:id="tfEnvPeriode" maxWidth="50" /> 
+                                        <Button maxWidth="50" onAction="#envPeriode" prefWidth="50" text="OK" />
+                                    </children>
+                                </HBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </bottom>
+       
+            <stylesheets>
+                <URL value="@css/radiateur.css" />
+            </stylesheets>
+        </BorderPane>
+        <ProgressIndicator fx:id="progress" visible="false" />
+    </children>
 </StackPane>

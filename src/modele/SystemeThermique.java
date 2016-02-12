@@ -40,8 +40,6 @@ public class SystemeThermique {
      */
     private Radiateur radiateur;
 
-    public ListProperty<Data<Double, Double>> listeDesTemperatures;
-
     /**
      * Crée un système thermique avec une pièce, un environnement et un
      * radiateurs.
@@ -51,31 +49,16 @@ public class SystemeThermique {
      * @param radiateur .
      */
     public SystemeThermique(Piece piece, Exterieur environnement, Radiateur radiateur) {
-        this.listeDesTemperatures = new SimpleListProperty<>(FXCollections.observableArrayList());
         this.tempsCourant = 0;
         this.piece = piece;
         this.environnement = environnement;
         this.radiateur = radiateur;
-    }
-    
-    public void demarrerSimulation() {
-        this.tempsCourant = 0;
-        for(int i=0;i<100;i++) {
-            evolutionTemperature();
-        }
-    }
-    
-    public void arreterSimulation() {
-        this.listeDesTemperatures.removeAll(this.listeDesTemperatures);
     }
 
     /**
      * Evolution de la température.
      */
     public void evolutionTemperature() {
-        // Mise à jour de notre liste de températures
-        //System.out.println("Ajout de " + (double)this.tempsCourant + " - " + this.piece.getTemperatureAmbiante());
-        this.listeDesTemperatures.add(new XYChart.Data<>((double)this.tempsCourant, this.piece.getTemperatureAmbiante()));
         // Calcul du thermostat
         double thermostat = this.radiateur.getThermostat(piece, environnement.getTemperatureExterieure(tempsCourant));
         // Calcul de la nouvelle température
